@@ -41,7 +41,7 @@ env:
   REPO_BRANCH: openwrt-21.02
   #FEEDS_CONF: immortalwrt/feeds.conf.default
   CONFIG_FILE: immortalwrt/rax3000m_250609.config
-  RELEASE_NOTICE: "ksmbd共享(删了)，samba4共享，新openclsh(预置内核），zerotier，新socat，新wechatpush3.6.8，luci-app-pushbot（删了），硬盘休眠luci-app-hd-idle，定时重启autoreboot，上网时间控制accesscontrol，zsh，vlmcsd（kms激活），diskman, usb-printer, usb移动网络拨号服务（luci-app-usbmodem），新AdGuard Home，新MosDNS，文件传输，TTYD终端, irqbalance（删了待研究：装完后ssh到路由器手动启动）, wolplus，新应用过滤(OAF)，uhttpd，luci-app-cloudflarespeedtest，新ddns-go， 新alist，aria2，qB下载4.4.5，luci-app-quickstart（删了），luci-app-istorex（删了），luci-app-store（删了） // diskman没有选主体；zsh没选，增加luci-app-wrtbwmon、luci-app-ramfree。"
+  RELEASE_NOTICE: "ksmbd共享(删了)，samba4共享，新openclsh(预置内核），zerotier，新socat，新wechatpush3.6.8，luci-app-pushbot（删了），硬盘休眠luci-app-hd-idle，定时重启autoreboot，上网时间控制accesscontrol，zsh，vlmcsd（kms激活），diskman, usb-printer, usb移动网络拨号服务（luci-app-usbmodem），新AdGuard Home，新MosDNS，文件传输，TTYD终端, irqbalance（删了待研究：装完后ssh到路由器手动启动）, wolplus，新应用过滤(OAF)，uhttpd，luci-app-cloudflarespeedtest，新ddns-go， 新alist（删了），aria2（删了），qB下载4.4.5，luci-app-quickstart（删了），luci-app-istorex（删了），luci-app-store（删了） // diskman没有选主体；zsh没选，增加luci-app-wrtbwmon、luci-app-ramfree。"
   DEVICE: rax3000m
   DIY_P1_SH: immortalwrt/diy-part1.sh
   DIY_P2_SH: immortalwrt/diy-part2.sh
