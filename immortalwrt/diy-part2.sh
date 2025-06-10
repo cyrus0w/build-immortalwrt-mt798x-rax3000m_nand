@@ -74,6 +74,7 @@ git clone --depth 1 https://github.com/sirpdboy/luci-app-ddns-go package/new/luc
 git clone --depth 1 https://github.com/mingxiaoyu/luci-app-cloudflarespeedtest.git package/new/luci-app-cloudflarespeedtest
 
 ## Add adguardhome
+# Notes：这个组件比较特殊，编译前需要注释掉.config中这一行CONFIG_PACKAGE_adguardhome=y
 git clone --depth 1 https://github.com/kiddin9/openwrt-adguardhome package/new/openwrt-adguardhome
 mv package/new/openwrt-adguardhome/*adguardhome package/new/
 \cp -rf $GITHUB_WORKSPACE/patches/AdGuardHome/AdGuardHome_template.yaml package/new/luci-app-adguardhome/root/usr/share/AdGuardHome/AdGuardHome_template.yaml
