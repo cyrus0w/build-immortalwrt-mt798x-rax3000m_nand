@@ -106,9 +106,9 @@ git clone --depth 1 -b v3.6.8 https://github.com/tty228/luci-app-wechatpush.git 
 #git clone --depth 1 https://github.com/zzsj0928/luci-app-pushbot package/new/luci-app-pushbot
 
 ## Add alist
-rm -rf feeds/luci/applications/luci-app-alist
-rm -rf feeds/packages/net/alist
-git clone --depth 1 https://github.com/sbwml/luci-app-alist package/new/alist
+#rm -rf feeds/luci/applications/luci-app-alist
+#rm -rf feeds/packages/net/alist
+#git clone --depth 1 https://github.com/sbwml/luci-app-alist package/new/alist
 
 ## Add luci-app-socat
 rm -rf feeds/packages/net/socat
