@@ -56,7 +56,7 @@ sed -i "s#^WPAPSK1=.*#WPAPSK1=$WIFI_PASSWD#g" package/mtk/drivers/wifi-profile/f
 
 rm -rf package/new && mkdir -p package/new
 
-## 下载主题luci-theme-argon
+## 下载最新版主题luci-theme-argon
 # git clone --depth 1 https://github.com/jerrykuku/luci-theme-argon.git package/new/luci-theme-argon
 # git clone --depth 1 https://github.com/jerrykuku/luci-app-argon-config.git package/new/luci-app-argon-config
 ## 调整 LuCI 依赖，去除 luci-app-opkg，替换主题 bootstrap 为 argon
@@ -86,8 +86,19 @@ mv package/new/openwrt-adguardhome/*adguardhome package/new/
 \cp -rf $GITHUB_WORKSPACE/patches/AdGuardHome/AdGuardHome_template.yaml package/new/luci-app-adguardhome/root/usr/share/AdGuardHome/AdGuardHome_template.yaml
 \cp -rf $GITHUB_WORKSPACE/patches/AdGuardHome/links.txt package/new/luci-app-adguardhome/root/usr/share/AdGuardHome/links.txt
 # sed -i 's/+adguardhome/+PACKAGE_$(PKG_NAME)_INCLUDE_binary:adguardhome/g' package/new/luci-app-adguardhome/Makefile
-# 修复一个源码bug
+# 修复源码bug
 sed -i 's#^include ../../lang/golang/golang-package.mk#include $(TOPDIR)/feeds/packages/lang/golang/golang-package.mk#' package/new/adguardhome/Makefile
+cat > package/new/adguardhome/patches/version.patch << EOF
+--- a/client/src/helpers/version.js
++++ b/client/src/helpers/version.js
+@@ -10,7 +10,7 @@ export const areEqualVersions = (left, right) => {
+ 
+     const leftVersion = left.replace(/^v/, '');
+     const rightVersion = right.replace(/^v/, '');
+-    return leftVersion === rightVersion;
++    return leftVersion >= rightVersion;
+ };
+EOF
 rm -rf package/new/openwrt-adguardhome
 
 ## Add luci-app-mosdns
