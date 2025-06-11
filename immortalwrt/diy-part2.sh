@@ -10,6 +10,12 @@
 # Description: OpenWrt DIY script part 2 (After Update feeds)
 #
 
+## 删除冲突的软件包（近期由于kenzo仓库添加了istore,导致和237仓库既有的istore的app在编译时冲突）
+#rm -rf ./package/istore
+#rm -rf ./feeds/kenzo/luci-app-quickstart
+#rm -rf ./feeds/kenzo/luci-app-store
+#rm -rf ./feeds/kenzo/luci-lib-taskd
+
 ## 移除 SNAPSHOT 标签
 #sed -i 's,SNAPSHOT,,g' include/version.mk
 #sed -i 's,-SNAPSHOT,,g' package/base-files/image-config.in
@@ -74,12 +80,13 @@ git clone --depth 1 https://github.com/sirpdboy/luci-app-ddns-go package/new/luc
 git clone --depth 1 https://github.com/mingxiaoyu/luci-app-cloudflarespeedtest.git package/new/luci-app-cloudflarespeedtest
 
 ## Add adguardhome
-rm -rf feeds/packages/net/adguardhome
 git clone --depth 1 https://github.com/kiddin9/openwrt-adguardhome package/new/openwrt-adguardhome
 mv package/new/openwrt-adguardhome/*adguardhome package/new/
 \cp -rf $GITHUB_WORKSPACE/patches/AdGuardHome/AdGuardHome_template.yaml package/new/luci-app-adguardhome/root/usr/share/AdGuardHome/AdGuardHome_template.yaml
 \cp -rf $GITHUB_WORKSPACE/patches/AdGuardHome/links.txt package/new/luci-app-adguardhome/root/usr/share/AdGuardHome/links.txt
 # sed -i 's/+adguardhome/+PACKAGE_$(PKG_NAME)_INCLUDE_binary:adguardhome/g' package/new/luci-app-adguardhome/Makefile
+# 修复一个源码bug
+sed -i 's#^include ../../lang/golang/golang-package.mk#include $(TOPDIR)/feeds/packages/lang/golang/golang-package.mk#' package/new/adguardhome/Makefile
 rm -rf package/new/openwrt-adguardhome
 
 ## Add luci-app-mosdns

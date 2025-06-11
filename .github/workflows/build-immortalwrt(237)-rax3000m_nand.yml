@@ -40,7 +40,7 @@ env:
 #  REPO_URL: https://github.com/zikura88/immortalwrt-mt798x
   REPO_BRANCH: openwrt-21.02
   #FEEDS_CONF: immortalwrt/feeds.conf.default
-  CONFIG_FILE: immortalwrt/rax3000m_250610.config
+  CONFIG_FILE: immortalwrt/rax3000m_250611.config
   RELEASE_NOTICE: "luci-app | 上网时间控制{accesscontrol}, Let’s Encrypt客户端{acme}, 新版去广告{adGuardhome}, 新版云盘管理{alist}(删了), 下载器{aria2}, 定时重启{autoreboot}, cloudflare优选{cloudflarespeedtest}, 新版动态域名{ddns-go}, 简单磁盘管理{diskman}, 网速控制{eqos-mtk}, 文件传输{filetransfer}(删了), 防火墙{firewall}, 硬盘休眠{hd-idle}, 新版dns分流{mosdns}, 无线配置管理{mtk}, 新版应用过滤{oaf}, 新版猫咪{openclash预置内核}, 包管理{opkg}, 4.4.5版本QB下载{qbittorrent}, 内存释放{ramfree}, ksmbd共享{ksmbd}(删了), smb共享{samba4}, 多功能网络工具{socat}, 网页终端{ttyd}, 网络加速{turboacc-mtk}, uhttpd服务器前端组件{uhttpd}(删了), 网络转发发现{upnp}, USB打印机共享{usb-printer}, USB移动网络拨号服务{usbmodem}, KMS激活{vlmcsd}, 3.6.8版本wechatpush{wechatpush}, 全能推送{pushbot}(删了), 设备唤醒++{wolplus}, 流量监控{wrtbwmon}(删了), 虚拟局域网内网穿透{zerotier}, zsh{oh my zsh}, luci-app-quickstart和luci-app-istorex和luci-app-store(删了)"
   DEVICE: rax3000m
   DIY_P1_SH: immortalwrt/diy-part1.sh
