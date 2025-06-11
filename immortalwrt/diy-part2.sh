@@ -88,17 +88,9 @@ mv package/new/openwrt-adguardhome/*adguardhome package/new/
 # sed -i 's/+adguardhome/+PACKAGE_$(PKG_NAME)_INCLUDE_binary:adguardhome/g' package/new/luci-app-adguardhome/Makefile
 # 修复源码bug
 sed -i 's#^include ../../lang/golang/golang-package.mk#include $(TOPDIR)/feeds/packages/lang/golang/golang-package.mk#' package/new/adguardhome/Makefile
-cat > package/new/adguardhome/patches/version.patch << EOF
---- a/client/src/helpers/version.js
-+++ b/client/src/helpers/version.js
-@@ -10,7 +10,7 @@ export const areEqualVersions = (left, right) => {
- 
-     const leftVersion = left.replace(/^v/, '');
-     const rightVersion = right.replace(/^v/, '');
--    return leftVersion === rightVersion;
-+    return leftVersion >= rightVersion;
- };
-EOF
+sed -i 's#version.ts#version.js#g' package/new/adguardhome/patches/version.patch
+sed -i 's#left: any#left#g' package/new/adguardhome/patches/version.patch
+sed -i 's#right: any#right#g' package/new/adguardhome/patches/version.patch
 rm -rf package/new/openwrt-adguardhome
 
 ## Add luci-app-mosdns
