@@ -81,7 +81,7 @@ git clone --depth 1 https://github.com/mingxiaoyu/luci-app-cloudflarespeedtest.g
 
 ## Add adguardhome
 rm -rf feeds/packages/net/adguardhome
-git clone --depth 1 https://github.com/kiddin9/openwrt-adguardhome package/new/openwrt-adguardhome
+git clone -b patch-1 https://github.com/kiddin9/openwrt-adguardhome package/new/openwrt-adguardhome
 mv package/new/openwrt-adguardhome/*adguardhome package/new/
 \cp -rf $GITHUB_WORKSPACE/patches/AdGuardHome/AdGuardHome_template.yaml package/new/luci-app-adguardhome/root/usr/share/AdGuardHome/AdGuardHome_template.yaml
 \cp -rf $GITHUB_WORKSPACE/patches/AdGuardHome/links.txt package/new/luci-app-adguardhome/root/usr/share/AdGuardHome/links.txt
