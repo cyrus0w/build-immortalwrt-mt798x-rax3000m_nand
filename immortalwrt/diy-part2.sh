@@ -85,12 +85,6 @@ git clone -b patch-1 https://github.com/kiddin9/openwrt-adguardhome package/new/
 mv package/new/openwrt-adguardhome/*adguardhome package/new/
 \cp -rf $GITHUB_WORKSPACE/patches/AdGuardHome/AdGuardHome_template.yaml package/new/luci-app-adguardhome/root/usr/share/AdGuardHome/AdGuardHome_template.yaml
 \cp -rf $GITHUB_WORKSPACE/patches/AdGuardHome/links.txt package/new/luci-app-adguardhome/root/usr/share/AdGuardHome/links.txt
-# sed -i 's/+adguardhome/+PACKAGE_$(PKG_NAME)_INCLUDE_binary:adguardhome/g' package/new/luci-app-adguardhome/Makefile
-# 修复源码bug
-sed -i 's#^include ../../lang/golang/golang-package.mk#include $(TOPDIR)/feeds/packages/lang/golang/golang-package.mk#' package/new/adguardhome/Makefile
-sed -i 's#version.ts#version.js#g' package/new/adguardhome/patches/version.patch
-sed -i 's#left: any#left#g' package/new/adguardhome/patches/version.patch
-sed -i 's#right: any#right#g' package/new/adguardhome/patches/version.patch
 rm -rf package/new/openwrt-adguardhome
 
 ## Add luci-app-mosdns
@@ -108,6 +102,35 @@ git clone --depth 1 https://github.com/destan19/OpenAppFilter.git package/new/Op
 
 ## Add luci-app-wolplus
 git clone --depth 1 https://github.com/animegasan/luci-app-wolplus package/new/luci-app-wolplus
+# Fix i18n file of chinese
+sed -i '/include \$(TOPDIR)\/feeds\/luci\/luci\.mk/iPKG_NAME:=luci-app-wolplus' package/new/luci-app-wolplus/Makefile
+sed -i 's#Wake on LAN#Wake on LAN +#' package/new/luci-app-wolplus/luasrc/controller/wolplus.lua
+mv package/new/luci-app-wolplus/po/zh-cn package/new/luci-app-wolplus/po/zh_Hans
+cat > package/new/luci-app-wolplus/po/zh_Hans/wolplus.po <<EOF
+msgid "Wake on LAN +"
+msgstr "网络唤醒+"
+
+msgid "Wake on LAN is a mechanism to remotely boot computers in the local network."
+msgstr "唤醒你的局域网设备"
+
+msgid "Host Clients"
+msgstr "设备列表"
+
+msgid "Name"
+msgstr "名称"
+
+msgid "MAC Address"
+msgstr "客户端MAC"
+
+msgid "Network Interface"
+msgstr "网络接口"
+
+msgid "Wake Up Host"
+msgstr "唤醒主机"
+
+msgid "Awake"
+msgstr "唤醒"
+EOF
 
 ## Add luci-app-wechatpush/v3.6.8
 rm -rf feeds/luci/applications/luci-app-wechatpush/
