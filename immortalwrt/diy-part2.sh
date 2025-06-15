@@ -72,9 +72,9 @@ rm -rf feeds/packages/lang/golang
 git clone --depth 1 https://github.com/sbwml/packages_lang_golang -b 23.x feeds/packages/lang/golang
 
 ## Add luci-app-ddns-go
-rm -rf feeds/luci/applications/luci-app-ddns-go
-rm -rf feeds/packages/net/ddns-go
-git clone --depth 1 https://github.com/sirpdboy/luci-app-ddns-go package/new/luci-app-ddns-go
+#rm -rf feeds/luci/applications/luci-app-ddns-go
+#rm -rf feeds/packages/net/ddns-go
+#git clone --depth 1 https://github.com/sirpdboy/luci-app-ddns-go package/new/luci-app-ddns-go
 
 ## Add luci-app-cloudflarespeedtest
 git clone --depth 1 https://github.com/mingxiaoyu/luci-app-cloudflarespeedtest.git package/new/luci-app-cloudflarespeedtest
