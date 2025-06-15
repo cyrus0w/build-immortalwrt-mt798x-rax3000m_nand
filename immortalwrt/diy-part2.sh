@@ -72,8 +72,8 @@ rm -rf feeds/packages/lang/golang
 git clone --depth 1 https://github.com/sbwml/packages_lang_golang -b 23.x feeds/packages/lang/golang
 
 ## Add luci-app-ddns-go
-#rm -rf feeds/luci/applications/luci-app-ddns-go
-#rm -rf feeds/packages/net/ddns-go
+rm -rf feeds/luci/applications/luci-app-ddns-go
+rm -rf feeds/packages/net/ddns-go
 #git clone --depth 1 https://github.com/sirpdboy/luci-app-ddns-go package/new/luci-app-ddns-go
 
 ## Add luci-app-cloudflarespeedtest
@@ -90,11 +90,11 @@ rm -rf package/new/openwrt-adguardhome
 ## Add luci-app-mosdns
 rm -rf feeds/packages/net/v2ray-geodata
 rm -rf feeds/packages/net/mosdns
-git clone --depth 1 https://github.com/sbwml/v2ray-geodata package/new/v2ray-geodata
-git clone --depth 1 https://github.com/sbwml/luci-app-mosdns -b v5 package/new/sbwml-mosdns
-mv -n package/new/sbwml-mosdns/*mosdns package/new/
-mv -n package/new/sbwml-mosdns/v2dat package/new/
-rm -rf package/new/sbwml-mosdns
+#git clone --depth 1 https://github.com/sbwml/v2ray-geodata package/new/v2ray-geodata
+#git clone --depth 1 https://github.com/sbwml/luci-app-mosdns -b v5 package/new/sbwml-mosdns
+#mv -n package/new/sbwml-mosdns/*mosdns package/new/
+#mv -n package/new/sbwml-mosdns/v2dat package/new/
+#rm -rf package/new/sbwml-mosdns
 
 ## Add 应用过滤(OAF)
 rm -rf feeds/packages/net/open-app-filter
@@ -140,8 +140,8 @@ git clone --depth 1 -b v3.6.8 https://github.com/tty228/luci-app-wechatpush.git 
 #git clone --depth 1 https://github.com/zzsj0928/luci-app-pushbot package/new/luci-app-pushbot
 
 ## Add alist
-#rm -rf feeds/luci/applications/luci-app-alist
-#rm -rf feeds/packages/net/alist
+rm -rf feeds/luci/applications/luci-app-alist
+rm -rf feeds/packages/net/alist
 #git clone --depth 1 https://github.com/sbwml/luci-app-alist package/new/alist
 
 ## Add luci-app-socat
