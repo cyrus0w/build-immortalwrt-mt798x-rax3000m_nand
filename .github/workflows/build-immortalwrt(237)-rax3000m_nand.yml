@@ -57,9 +57,6 @@ env:
   TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
   TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
-permissions:
-  actions: write   # 关键！必须显式赋予这个权限，否则不能删除workflow
-
 
 jobs:
   _rax3000m:
@@ -262,6 +259,7 @@ jobs:
       with:
         retain_days: 5
         keep_minimum_runs: 1
+        token: ${{ secrets.PAT_TOKEN }}
 
     - name: Remove old Releases
       uses: dev-drprasad/delete-older-releases@v0.3.3
