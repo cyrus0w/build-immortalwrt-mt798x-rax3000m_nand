@@ -23,6 +23,9 @@
 ## Modify default Lan IP
 sed -i 's/192\.168\.[0-9]*\.[0-9]*/192.168.5.1/g' package/base-files/files/bin/config_generate
 
+# 修改后台密码
+#root:$1$Bf9c77vu$J75KwVpaDpJI0YDR0WT2U0:20259:0:99999:7:::     package/base-files/files/etc/shadow
+
 ## Modify hostname
 #sed -i "s/hostname='.*'/hostname='MzWrt'/g" package/base-files/files/bin/config_generate
 
@@ -39,8 +42,11 @@ fi
 
 ## 修改wifi名称和用户名密码
 # 如果是使用LUCI界面配置WiFi，也就是使用mtwifi-cfg
-sed -i 's/ImmortalWrt-2.4G/RAX3000M/g' package/mtk/applications/mtwifi-cfg/files/mtwifi.sh
-sed -i 's/ImmortalWrt-5G/RAX3000M-5G/g' package/mtk/applications/mtwifi-cfg/files/mtwifi.sh
+cp -f $GITHUB_WORKSPACE/patches/mtwifi-cfg/mtwifi.sh package/mtk/applications/mtwifi-cfg/files/mtwifi.sh
+sed -i "s#key=\"none\"#key=\"$WIFI_PASSWD\"#g" package/mtk/applications/mtwifi-cfg/files/mtwifi.sh
+#sed -i 's/ImmortalWrt-2.4G/RAX3000M/g' package/mtk/applications/mtwifi-cfg/files/mtwifi.sh
+#sed -i 's/ImmortalWrt-5G/RAX3000M-5G/g' package/mtk/applications/mtwifi-cfg/files/mtwifi.sh
+
 # 如果是使用luci-app-mtk界面配置WiFi
 sed -i "s#^SSID1=.*#SSID1=RAX3000M#g" package/mtk/drivers/wifi-profile/files/mt7981/mt7981.dbdc.b0.dat
 sed -i "s#^SSID1=.*#SSID1=RAX3000M-5G#g" package/mtk/drivers/wifi-profile/files/mt7981/mt7981.dbdc.b1.dat

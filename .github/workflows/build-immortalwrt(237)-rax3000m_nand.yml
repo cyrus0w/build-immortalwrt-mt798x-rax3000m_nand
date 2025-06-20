@@ -56,7 +56,11 @@ env:
   UPLOAD_RELEASE: true
   TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
   TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        
+
+permissions:
+  actions: write   # 关键！必须显式赋予这个权限，否则不能删除workflow
+
+
 jobs:
   _rax3000m:
     runs-on: ubuntu-22.04
@@ -233,7 +237,7 @@ jobs:
         else
           echo "- 未编译luci-app-dockerman" >> release.txt
         fi
-        echo "- 集成组件${{ env.RELEASE_NOTICE }}" >> release.txt
+        echo "- 集成组件：${{ env.RELEASE_NOTICE }}" >> release.txt
         echo "release_tag=${{ env.FILE_DATE }}-${{ env.Firmware_Author }}${{ env.DEVICE_NAME }}${{ env.BUILD_DOCKERMAN }}" >> $GITHUB_OUTPUT
         echo "status=success" >> $GITHUB_OUTPUT
         
