@@ -19,18 +19,18 @@ name: Build rax3000m
 #        required: false
 #        default: 'false'
 
-on: 
-  release:
-    types: [published]
-  push:
-    tags:
-    - 'v*'
-  #  branches: 
-  #    - master
-#  schedule:
-#    - cron: 0 8 * * 5
-  watch:
-    types: [started]
+#on: 
+#  release:
+#    types: [published]
+#  push:
+#    tags:
+#    - 'v*'
+#  #  branches: 
+#  #    - master
+##  schedule:
+##    - cron: 0 8 * * 5
+#  watch:
+#    types: [started]
 
  
 
