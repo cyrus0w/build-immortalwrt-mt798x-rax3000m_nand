@@ -8,27 +8,45 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: Build rax3000m
+name: Build RAX3000m Nand
 
-#on:
-#  repository_dispatch:
-#  workflow_dispatch:
-#    inputs:
-#      ssh:
-#        description: 'SSH connection to Actions'
-#        required: false
-#        default: 'false'
 
-on: 
-  release:
-    types: [published]
-  push:
-    tags:
-    - 'v*'
+on:
+  ### 界面控制部分 ( 以下内容请保持不变 )
+  #repository_dispatch:
+  #workflow_dispatch:
+  #  inputs:
+  #    ssh:
+  #      description: 'SSH connection to Actions'
+  #      required: false
+  #      default: 'false'
+  #    Tempoary_IP:
+  #      description: '固件 IP 地址 [可选]'
+  #      default: ''
+  #    Tempoary_CONFIG:
+  #      description: '配置文件 [可选]'
+  #      default: ''
+  #    Tempoary_FLAG:
+  #      description: '固件标签 [可选]'
+  #      default: ''
+  ### 界面控制部分结束 ( 以上内容请保持不变 )
+
+  ## 只有当发布被标记为已发布（published）时才会触发工作流(不要删除此行注释)
+  #release:
+  #  types: [published]
+    
+  ## Git Push 时触发编译(不要删除此行注释)
+  #push:
   #  branches: 
   #    - master
-#  schedule:
-#    - cron: 0 8 * * 5
+  #  tags:
+  #    - 'v*'
+  
+  ## 定时触发编译(不要删除此行注释)
+  #schedule:
+  #  - cron: 0 8 * * 5
+  
+  ## 重新点亮 Star 时触发编译(不要删除此行注释)
   watch:
     types: [started]
 
@@ -52,14 +70,20 @@ env:
   PPPOE_PASSWD: ${{ secrets.PPPOE_PASSWD }}
   WIFI_PASSWD: ${{ secrets.WIFI_PASSWD }}
   ROOT_PASSWD: ${{ secrets.ROOT_PASSWD }}
-  UPLOAD_FIRMWARE: true
+  # 上传固件到 Github Releases
   UPLOAD_RELEASE: true
+  # 上传 bin 文件夹到 Github Artifacts
+  UPLOAD_BIN_ARTIFACTS: false
+  # 删除早期的 workflow 任务
+  DELETE_OLD_WORKFLOW: true
+  # 删除早期的 release
+  DELETE_OLD_RELEASE: true
   TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
   TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
 
 jobs:
-  _rax3000m:
+  Compile_rax3000m:
     runs-on: ubuntu-22.04
     permissions:
       contents: write
@@ -174,6 +198,7 @@ jobs:
         echo -e "$(nproc) thread compile"
         make -j$(nproc) || make -j1 V=s
         #make -j$(nproc) || make -j1 || make -j1 V=s
+        [ "$?" == 0 ] && echo "Compile_Result=true" >> $GITHUB_ENV || echo "Compile_Result=false" >> $GITHUB_ENV
         
         sed -n 's/.*lan) ipad=${ipaddr:-"\([0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+\)"} ;;.*/\1/p' package/base-files/files/bin/config_generate | head -n 1 > LAN_IP
         [ -s LAN_IP ] && echo "LAN_IP=$(cat LAN_IP)" >> $GITHUB_ENV
@@ -190,7 +215,6 @@ jobs:
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
         echo "FILE_DATE=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_ENV
-        echo "status=success" >> $GITHUB_OUTPUT
     
     - name: Check space usage
       if: "!cancelled()"
@@ -198,24 +222,23 @@ jobs:
       
     - name: 整理输出文件
       id: organize
-      if: "env.UPLOAD_FIRMWARE == 'true' && !cancelled()"
+      if: "(env.UPLOAD_RELEASE == 'true' || env.UPLOAD_ARTIFACTS == 'true') && !cancelled()"
       run: | 
         #mapfile -t devices < <(grep '^CONFIG_TARGET_DEVICE.*=y' openwrt/.config | sed -r 's/.*DEVICE_(.*)=y/\1/')
         cd openwrt/bin/targets/*/*
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
-        echo "status=success" >> $GITHUB_OUTPUT
         
-    - name : 打包上传固件到Actions Artifacts
+    - name : 打包上传bin到Actions Artifacts
       uses: actions/upload-artifact@main
-      if: "steps.organize.outputs.status == 'success' && !cancelled()"
+      if: "env.UPLOAD_BIN_ARTIFACTS == 'true' && !cancelled()"
       with:
         name: ${{ env.FILE_DATE }}-${{ env.Firmware_Author }}${{ env.DEVICE_NAME }}${{ env.BUILD_DOCKERMAN }}
         path: openwrt/bin
 
     - name: 生成固件Release标签
       id: tag
-      if: "env.UPLOAD_RELEASE == 'true' && !cancelled()"
+      if: "env.UPLOAD_RELEASE == 'true' && env.Compile_Result == 'true' && !cancelled()"
       run: |
         touch release.txt
         echo "- 使用源码：${{ env.REPO_URL }}" >> release.txt
@@ -240,7 +263,7 @@ jobs:
         
     - name: 发布固件至Release
       uses: softprops/action-gh-release@v2.1.0
-      if: "steps.tag.outputs.status == 'success' && !cancelled()"
+      if: "env.UPLOAD_RELEASE == 'true' && steps.tag.outputs.status == 'success' && !cancelled()"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
@@ -250,20 +273,21 @@ jobs:
         body_path: release.txt
 
 #    - name: Telegram notification
-#      if: steps.compile.outputs.status == 'success'
+#      if: steps.compile.outputs.Compile_Result == 'true'
 #      run: |
 #        curl -k --data chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" --data "text=亲爱的✨主人✨：您使用 github Action 编译的 ${{ env.DEVICE }}_${{ env.Firmware_Author }}_immortalwrt 固件顺利编译完成了！💐" "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage"
         
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@v2
+      if: "env.DELETE_OLD_WORKFLOW == 'true' && !cancelled()"
       with:
         retain_days: 5
         keep_minimum_runs: 1
         token: ${{ secrets.PAT_TOKEN }}
 
-    - name: Remove old Releases
+    - name: Remove old Release
       uses: dev-drprasad/delete-older-releases@v0.3.3
-      if: "env.UPLOAD_RELEASE == 'true' && !cancelled()"
+      if: "env.DELETE_OLD_RELEASE == 'true' && !cancelled()"
       with:
         keep_latest: 20
         delete_tags: true
