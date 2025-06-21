@@ -11,7 +11,8 @@
 * 近期由于kenzo仓库添加了istore,导致和237仓库既有的istore的app在编译时冲突，请编译时注意在diy-part2.sh中加入命令删除某些重复的软件包。
 
  ### 鸣谢
- 排名不分先后<br />
+ 以下排名不分先后<br />
+ 
  固件:<br />
  [`immortalwrt`](https://github.com/immortalwrt/immortalwrt)
  [`openwrt`](https://github.com/openwrt/openwrt)
