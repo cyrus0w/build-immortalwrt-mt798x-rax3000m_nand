@@ -83,7 +83,7 @@ env:
 
 
 jobs:
-  Compile_rax3000m:
+  Compile:
     runs-on: ubuntu-22.04
     permissions:
       contents: write
